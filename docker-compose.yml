@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+    shopserver:
+        build: .
+        container_name: shopserver
+        command: python manage.py runserver 0.0.0.0:8000
+        volumes:
+            - .:/usr/src/app
+        environment:
+            - DEBUG=1
+            - ALLOWED_HOSTS=127.0.0.1
+        ports:
+            - "8000:8000"
+        depends_on:
+            - shopdb
+    shopdb:
+        image: postgres
+        container_name: shopdb
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        volumes:
+            - pgdata:/var/lib/postgresql/data/
+volumes:
+    pgdata:
