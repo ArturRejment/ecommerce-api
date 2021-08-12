@@ -4,7 +4,15 @@ from .models import Product, Category
 from .relations import CategoryRelatedField
 
 
-class ProductSerializer(serializers.ModelSerializer):
+class ProductListSerializer(serializers.ModelSerializer):
+	categories = CategoryRelatedField(many=True, required=False)
+
+	class Meta:
+		model = Product
+		fields = ('product_name', 'product_price', 'categories')
+
+
+class ProductDetailSerializer(serializers.ModelSerializer):
 	categories = CategoryRelatedField(many=True, required=False)
 
 	class Meta:
