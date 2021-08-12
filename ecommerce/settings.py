@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'djoser',
     # My apps
-    'authentication'
+    'authentication',
+    'product'
 ]
 
 MIDDLEWARE = [
