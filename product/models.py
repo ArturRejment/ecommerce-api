@@ -11,6 +11,9 @@ class Product(models.Model):
 	shipping_cost = models.DecimalField(max_digits=7, decimal_places=2)
 	categories = models.ManyToManyField('product.Category', related_name='product_category')
 
+	class Meta:
+		ordering = ('product_name',)
+
 	def __str__(self):
 		return f'{self.product_name} {self.product_price}zl'
 
