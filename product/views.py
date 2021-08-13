@@ -6,12 +6,17 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 from .serializers import ProductListSerializer, ProductDetailSerializer
 from .models import Product
 
+
 class ProductListView(generics.ListAPIView):
 	serializer_class = ProductListSerializer
 	queryset = Product.objects.prefetch_related('categories')
 
+
 class ProductDetailView(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
 	serializer_class = ProductDetailSerializer
+
+	def get_queryset(self):
+		super().get_queryset()
 
 	def retrieve(self, request, *args, **kwargs):
 		try:
