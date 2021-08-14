@@ -1,36 +1,42 @@
 [
 	{
 	"model": "product.category",
+	"id": 1,
 	"fields": {
 		"category_name": "Okna"
 		}
 	},
 	{
 	"model": "product.category",
+	"id": 2,
 	"fields": {
 		"category_name": "Lustra"
 		}
 	},
 	{
 	"model": "product.category",
+	"id": 3,
 	"fields": {
 		"category_name": "Lampy"
 		}
 	},
 	{
 	"model": "product.category",
+	"id": 4,
 	"fields": {
 		"category_name": "Skrzydła"
 		}
 	},
 	{
 	"model": "product.category",
+	"id": 5,
 	"fields": {
 		"category_name": "Obrazy"
 		}
 	},
 	{
 	"model": "product.category",
+	"id": 6,
 	"fields": {
 		"category_name": "Kanapy"
 		}
