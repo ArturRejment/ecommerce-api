@@ -1,6 +1,7 @@
 [
 	{
 	"model": "product.product",
+	"id": 1,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -14,6 +15,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 2,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -27,6 +29,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 3,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -40,6 +43,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 4,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -53,6 +57,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 5,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -66,6 +71,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 6,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -79,6 +85,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 7,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -92,6 +99,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 8,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -105,6 +113,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 9,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -118,6 +127,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 10,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -131,6 +141,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 11,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -144,6 +155,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 12,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -157,6 +169,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 13,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -170,6 +183,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 14,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -183,6 +197,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 15,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -196,6 +211,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 16,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
@@ -209,6 +225,7 @@
 	},
 	{
 	"model": "product.product",
+	"id": 17,
 	"fields": {
 		"product_name": "Lorem ipsum",
 		"product_price": 200.99,
