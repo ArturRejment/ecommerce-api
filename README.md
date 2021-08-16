@@ -19,3 +19,21 @@ API for ecommerce
 
 ### /product/\<int:id>/
 - `GET` Returns specific product
+
+
+## Authentication
+
+### /auth/users/
+- `POST` Allows to register new user with:
+  - email
+  - password
+  - re_password
+  - first_name
+  - last_name
+  - phone
+
+### /auth/token/login/
+- `POST` Allows to login user with email and password
+
+### /auth/token/logout/
+- `POST` Allows to logout user
