@@ -10,9 +10,18 @@ class Product(models.Model):
 	product_condition = models.CharField(max_length=50, null=True, blank=True)
 	shipping_cost = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
 	categories = models.ManyToManyField('product.Category', related_name='product_category')
+	product_picture = models.ImageField(upload_to='product_pictures', default='default.jpg', height_field=None, width_field=None, max_length=None)
 
 	class Meta:
 		ordering = ('product_name',)
+
+	@property
+	def image_url(self):
+		try:
+			url = 'http://127.0.0.1:8000/static' + self.product_picture.url
+		except Exception:
+			url = ''
+		return url
 
 	def __str__(self):
 		return f'{self.product_name} {self.product_price}zl'
