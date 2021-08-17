@@ -2,19 +2,23 @@ from django.shortcuts import render
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 from .serializers import CartSerializer
 from .models import Cart
 
 
 class CartDetailView(RetrieveAPIView):
+	permission_classes = (IsAuthenticated,)
 	serializer_class = CartSerializer
 
-	def retrieve(self, request, **kwargs):
+	def retrieve(self, request):
 		""" Retrieve cart for specific user """
-		cart_id = kwargs['id']
+		user = request.user
+		if user is None or not user.is_authenticated:
+			raise NotFound('User is not provided')
 		try:
-			cart = Cart.objects.get(id = cart_id)
+			cart = Cart.objects.new_or_get(user = user)
 		except Cart.DoesNotExist:
 			raise NotFound('Cart with this id does not exist')
 
