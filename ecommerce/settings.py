@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'djoser',
     # My apps
     'authentication',
-    'product'
+    'product',
+    'cart',
 ]
 
 MIDDLEWARE = [
