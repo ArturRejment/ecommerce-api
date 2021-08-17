@@ -20,3 +20,10 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 		fields = ('id', 'product_name', 'product_price', 'detail_description',
 				  'availability', 'accession_number', 'product_condition',
 				  'shipping_cost', 'categories', 'image_url')
+
+
+class ProductCartSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = Product
+		fields = ('id', 'product_name', 'product_price', 'image_url')
