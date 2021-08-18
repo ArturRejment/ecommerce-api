@@ -6,6 +6,7 @@ from product.models import Product
 
 User = settings.AUTH_USER_MODEL
 
+
 class CartManager(models.Manager):
 
 	def new_or_get(self, user):
@@ -23,13 +24,40 @@ class CartManager(models.Manager):
 
 class Cart(models.Model):
 	user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-	products = models.ManyToManyField(Product, related_name='cart_products')
-	total = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
 	updated = models.DateTimeField(auto_now=True)
-	timestamp = models.DateTimeField(auto_now_add=True)
 
 	objects = CartManager()
 
 	def __str__(self):
 		return str(self.id)
+
+	@property
+	def get_products_quantity(self):
+		""" Returns number of products in the cart """
+		cartitems = self.cartitems_set.all()
+		quantity = sum([item.quantity for item in cartitems])
+		return quantity
+
+	@property
+	def get_cart_total(self):
+		""" Returns total value of the products in the cart """
+		cartitems = self.cartitems_set.all()
+		total = sum([item.get_total_value for item in cartitems])
+		return total
+
+
+class CartItems(models.Model):
+	cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+	product = models.ForeignKey(Product, on_delete=models.CASCADE)
+	quantity = models.IntegerField()
+	timestamp = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return f'{self.cart} {self.product}'
+
+	@property
+	def get_total_value(self):
+		""" Returns total value of this product based on quantity """
+		total = self.product.product_price * self.quantity
+		return total
 
