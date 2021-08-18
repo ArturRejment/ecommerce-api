@@ -16,12 +16,9 @@ class CartDetailView(RetrieveAPIView):
 		""" Retrieve cart for specific user """
 		user = request.user
 		if user is None or not user.is_authenticated:
-			raise NotFound('User is not provided')
-		try:
-			cart = Cart.objects.new_or_get(user = user)
-		except Cart.DoesNotExist:
-			raise NotFound('Cart with this id does not exist')
-		cart.total_value
+			raise NotFound('Unauthenticated user cannot have cart')
+
+		cart = Cart.objects.new_or_get(user = user)
 
 		serializer = self.serializer_class(cart)
 		return Response(serializer.data, status=200)

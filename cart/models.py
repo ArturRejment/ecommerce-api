@@ -43,6 +43,7 @@ class Cart(models.Model):
 		""" Returns total value of the products in the cart """
 		cartitems = self.cartitems_set.all()
 		total = sum([item.get_total_value for item in cartitems])
+		return total
 
 
 class CartItems(models.Model):
@@ -54,7 +55,9 @@ class CartItems(models.Model):
 	def __str__(self):
 		return f'{self.cart} {self.product}'
 
+	@property
 	def get_total_value(self):
 		""" Returns total value of this product based on quantity """
-		return self.product.product_price * self.quantity
+		total = self.product.product_price * self.quantity
+		return total
 
