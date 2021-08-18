@@ -21,6 +21,7 @@ class CartDetailView(RetrieveAPIView):
 			cart = Cart.objects.new_or_get(user = user)
 		except Cart.DoesNotExist:
 			raise NotFound('Cart with this id does not exist')
+		cart.total_value
 
 		serializer = self.serializer_class(cart)
 		return Response(serializer.data, status=200)
