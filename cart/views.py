@@ -45,4 +45,24 @@ class ManageCartItems(APIView):
 		cartitem, created = CartItems.objects.get_or_create(cart=cart, product=product)
 		cartitem.quantity = (cartitem.quantity + 1)
 		cartitem.save()
-		return Response({'product':'created'})
+		return Response({'product': 'created'})
+
+	def delete(self, request, **kwargs):
+		""" Remove product specified by id from the cart """
+		# Still in progress
+		user = request.user
+		if user is None or not user.is_authenticated:
+			raise NotFound('Unauthenticated user cannot add product to the cart')
+		product_id = kwargs['id']
+		try:
+			product = Product.objects.get(id = product_id)
+		except Product.DoesNotExist:
+			raise NotFound('Cannot found this product')
+		cart = Cart.objects.new_or_get(user = user)
+		cartitem, created = CartItems.objects.get_or_create(cart=cart, product=product)
+		cartitem.quantity = (cartitem.quantity - 1)
+		if cartitem.quantity <= 0:
+			cartitem.delete()
+		else:
+			cartitem.save()
+		return Response({'product':'removed'})
