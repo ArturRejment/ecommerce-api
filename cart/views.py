@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 from .serializers import CartSerializer
-from .models import Cart, CartItems
+from .models import Cart, CartItem
 from product.serializers import ProductDetailSerializer
 from product.models import Product
 
@@ -41,7 +41,7 @@ class ManageCartItems(APIView):
 		except Product.DoesNotExist:
 			raise NotFound('Cannot found this product')
 		cart = Cart.objects.new_or_get(user = user)
-		self.cartitem, created = CartItems.objects.get_or_create(cart=cart, product=product)
+		self.cartitem, created = CartItem.objects.get_or_create(cart=cart, product=product)
 
 	def post(self, request, **kwargs):
 		""" Add product specified by id to the cart """
