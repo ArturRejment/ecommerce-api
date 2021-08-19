@@ -49,7 +49,7 @@ class Cart(models.Model):
 class CartItems(models.Model):
 	cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)
-	quantity = models.IntegerField()
+	quantity = models.IntegerField(default=0)
 	timestamp = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
