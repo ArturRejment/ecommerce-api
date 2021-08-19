@@ -30,9 +30,8 @@ class ManageCartItems(APIView):
 	permission_classes = (IsAuthenticated,)
 	serializer_class = ProductDetailSerializer
 
-	def post(self, request, **kwargs):
-		""" Add product specified by id to the cart """
-		# Still in progress
+	def get_objects(self, request, **kwargs):
+		""" Obtain necessary objects to manage cart """
 		user = request.user
 		if user is None or not user.is_authenticated:
 			raise NotFound('Unauthenticated user cannot add product to the cart')
@@ -42,27 +41,23 @@ class ManageCartItems(APIView):
 		except Product.DoesNotExist:
 			raise NotFound('Cannot found this product')
 		cart = Cart.objects.new_or_get(user = user)
-		cartitem, created = CartItems.objects.get_or_create(cart=cart, product=product)
-		cartitem.quantity = (cartitem.quantity + 1)
-		cartitem.save()
+		self.cartitem, created = CartItems.objects.get_or_create(cart=cart, product=product)
+
+	def post(self, request, **kwargs):
+		""" Add product specified by id to the cart """
+		# Still in progress
+		self.get_objects(request, **kwargs)
+		self.cartitem.quantity = (self.cartitem.quantity + 1)
+		self.cartitem.save()
 		return Response({'product': 'created'})
 
 	def delete(self, request, **kwargs):
 		""" Remove product specified by id from the cart """
 		# Still in progress
-		user = request.user
-		if user is None or not user.is_authenticated:
-			raise NotFound('Unauthenticated user cannot add product to the cart')
-		product_id = kwargs['id']
-		try:
-			product = Product.objects.get(id = product_id)
-		except Product.DoesNotExist:
-			raise NotFound('Cannot found this product')
-		cart = Cart.objects.new_or_get(user = user)
-		cartitem, created = CartItems.objects.get_or_create(cart=cart, product=product)
-		cartitem.quantity = (cartitem.quantity - 1)
-		if cartitem.quantity <= 0:
-			cartitem.delete()
+		self.get_objects(request, **kwargs)
+		self.cartitem.quantity = (self.cartitem.quantity - 1)
+		if self.cartitem.quantity <= 0:
+			self.cartitem.delete()
 		else:
-			cartitem.save()
+			self.cartitem.save()
 		return Response({'product':'removed'})
