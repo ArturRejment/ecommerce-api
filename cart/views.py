@@ -45,3 +45,4 @@ class ManageCartItems(APIView):
 		cartitem, created = CartItems.objects.get_or_create(cart=cart, product=product)
 		cartitem.quantity = (cartitem.quantity + 1)
 		cartitem.save()
+		return Response({'product':'created'})
