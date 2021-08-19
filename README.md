@@ -20,6 +20,12 @@ API for ecommerce
 ### /product/\<int:id>/
 - `GET` Returns specific product
 
+### /cart/
+- `GET` Obtain current state of the cart. Contains total value, number of products in the cart and all products
+
+### /cart/cartitem/\<int:id>/
+- `POST` Add product specified by id to the cart
+- `DELETE` Remove product specified by id from the cart
 
 ## Authentication
 
