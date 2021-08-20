@@ -34,14 +34,14 @@ class Cart(models.Model):
 	@property
 	def get_products_quantity(self):
 		""" Returns number of products in the cart """
-		cartitems = self.cartitems_set.all()
+		cartitems = self.cartitem_set.all()
 		quantity = sum([item.quantity for item in cartitems])
 		return quantity
 
 	@property
 	def get_cart_total(self):
 		""" Returns total value of the products in the cart """
-		cartitems = self.cartitems_set.all()
+		cartitems = self.cartitem_set.all()
 		total = sum([item.get_total_value for item in cartitems])
 		return total
 

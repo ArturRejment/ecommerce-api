@@ -21,6 +21,14 @@ class CartSerializer(serializers.ModelSerializer):
 
 	def get_products(self, instance):
 		""" Retrieve products in the cart """
-		orderitems =  instance.cartitems_set.all()
-		serializer = CartItemSerializer(orderitems, many=True)
+		cartitems =  instance.cartitem_set.all()
+		serializer = CartItemSerializer(cartitems, many=True)
 		return serializer.data
+
+
+class GeneralCartSerializer(serializers.ModelSerializer):
+	""" Serialize only brief info about cart """
+
+	class Meta:
+		model = Cart
+		fields = ('id', 'user', 'get_products_quantity', 'get_cart_total')
