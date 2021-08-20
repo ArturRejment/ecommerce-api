@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
-from .serializers import CartSerializer
+from .serializers import CartSerializer, GeneralCartSerializer
 from .models import Cart, CartItem
 from product.serializers import ProductDetailSerializer
 from product.models import Product
@@ -28,7 +28,7 @@ class CartDetailView(RetrieveAPIView):
 
 class ManageCartItems(APIView):
 	permission_classes = (IsAuthenticated,)
-	serializer_class = ProductDetailSerializer
+	serializer_class = GeneralCartSerializer
 
 	def get_objects(self, request, **kwargs):
 		""" Obtain necessary objects to manage cart """
@@ -40,8 +40,8 @@ class ManageCartItems(APIView):
 			product = Product.objects.get(id = product_id)
 		except Product.DoesNotExist:
 			raise NotFound('Cannot found this product')
-		cart = Cart.objects.new_or_get(user = user)
-		self.cartitem, created = CartItem.objects.get_or_create(cart=cart, product=product)
+		self.cart = Cart.objects.new_or_get(user = user)
+		self.cartitem, created = CartItem.objects.get_or_create(cart=self.cart, product=product)
 
 	def post(self, request, **kwargs):
 		""" Add product specified by id to the cart """
@@ -49,7 +49,8 @@ class ManageCartItems(APIView):
 		self.get_objects(request, **kwargs)
 		self.cartitem.quantity = (self.cartitem.quantity + 1)
 		self.cartitem.save()
-		return Response({'product': 'created'})
+		serializer = self.serializer_class(self.cart)
+		return Response(serializer.data, status=200)
 
 	def delete(self, request, **kwargs):
 		""" Remove product specified by id from the cart """
@@ -60,4 +61,5 @@ class ManageCartItems(APIView):
 			self.cartitem.delete()
 		else:
 			self.cartitem.save()
-		return Response({'product':'removed'})
+		serializer = self.serializer_class(self.cart)
+		return Response(serializer.data)
