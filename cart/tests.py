@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from rest_framework.test import APITestCase, APIClient
 
 from cart.models import Cart, CartItem
@@ -10,13 +12,13 @@ class TestCartViews(APITestCase):
 
 	def setUp(self):
 		categories = [Category.objects.create(category_name=category) for category in CATEGORIES_NAMES]
-		product_1 = Product.objects.create(
+		self.product_1 = Product.objects.create(
 			product_name = 'Nike AirForce 1',
 			product_price=459.99,
 			detail_description='Best Nike model, soo comfy and good looking',
 			availability=4,
 		)
-		product_2 = Product.objects.create(
+		self.product_2 = Product.objects.create(
 			product_name = 'Wrangler Stan Smith Collection',
 			product_price=250.99,
 			detail_description="Stunning jeans model from new Wrangler's cross collection.",
@@ -53,4 +55,51 @@ class TestCartViews(APITestCase):
 		self.client.defaults['HTTP_AUTHORIZATION'] = 'Token ' + token
 
 	def testAddingProductToCart(self):
-		pass
+		response = self.client.post(
+			f'/cart/cartitem/{self.product_1.id}/'
+		)
+		self.assertEquals(response.status_code, 200)
+		response_data = response.data
+		self.assertEquals(response_data.get('get_products_quantity'), 1)
+
+	def testRemovingProductFromCart(self):
+		response = self.client.delete(
+			f'/cart/cartitem/{self.product_1.id}/'
+		)
+		self.assertEquals(response.status_code, 200)
+		response_data = response.data
+		self.assertEquals(response_data.get('get_products_quantity'), 0)
+
+	def testCartFunctionality(self):
+		# Add product two times
+		self.client.post(
+			f'/cart/cartitem/{self.product_1.id}/'
+		)
+		response = self.client.post(
+			f'/cart/cartitem/{self.product_1.id}/'
+		)
+		# Check cart info
+		self.assertEquals(response.status_code, 200)
+		self.assertEquals(response.data.get('get_products_quantity'), 2)
+		self.assertEquals(
+			response.data.get('get_cart_total'),
+			Decimal(str(self.product_1.product_price + self.product_1.product_price))
+		)
+		response = self.client.post(
+			f'/cart/cartitem/{self.product_2.id}/'
+		)
+		self.assertEquals(response.status_code, 200)
+		self.assertEquals(response.data.get('get_products_quantity'), 3)
+		self.assertEquals(
+			response.data.get('get_cart_total'),
+			Decimal(str(self.product_1.product_price + self.product_1.product_price + self.product_2.product_price))
+		)
+		response = self.client.delete(
+			f'/cart/cartitem/{self.product_1.id}/'
+		)
+		self.assertEquals(response.status_code, 200)
+		self.assertEquals(response.data.get('get_products_quantity'), 2)
+		self.assertEquals(
+			response.data.get('get_cart_total'),
+			Decimal(str(self.product_1.product_price + self.product_2.product_price))
+		)
