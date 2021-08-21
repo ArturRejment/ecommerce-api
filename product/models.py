@@ -32,3 +32,13 @@ class Category(models.Model):
 
 	def __str__(self):
 		return self.category_name
+
+
+class Image(models.Model):
+	product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+	position = models.IntegerField()
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+	src = models.ImageField(upload_to='product_products', default='default.jpg', height_field=None, width_field=None, max_length=None)
+	width = models.PositiveIntegerField()
+	height = models.PositiveIntegerField()
