@@ -2,37 +2,50 @@ from django.db import models
 
 
 class Product(models.Model):
+	STOCK_STATUS_CHOICE = (
+		(0, "Brak"),
+		(10, "Ostatnie sztuki"),
+		(20, "Dostępne"),
+	)
+
 	product_name = models.CharField(
 		verbose_name="Nazwa produktu",
 		max_length=255,
-		null=False,
-		blank=False,
-	)
-	product_price = models.DecimalField(
-		verbose_name="Cena [zł]",
-		max_digits=10,
-		decimal_places=2,
-		null=False,
-		blank=False,
 	)
 	detail_description = models.TextField(
 		verbose_name="Opis",
 		null=True,
 		blank=True,
 	)
-	availability = models.PositiveIntegerField(
+	stock_status = models.PositiveIntegerField(
 		verbose_name="Dostępność",
-		null=True,
-		blank=True,
+		choices=STOCK_STATUS_CHOICE,
+	)
+	retail_price_net = models.DecimalField(
+		verbose_name="Detaliczna cena netto [zł]",
+		max_digits=10,
+		decimal_places=4,
+	)
+	whole_price_whole = models.DecimalField(
+		verbose_name="Hurtowa cena netto [zł]",
+		max_digits=10,
+		decimal_places=4,
+	)
+	tax = models.DecimalField(
+		verbose_name="Podatek VAT [%]",
+		max_digits=10,
+		decimal_places=4,
+	)
+	is_visible = models.BooleanField(
+		verbose_name="Czy widoczny",
+		default=True,
+	)
+	is_new = models.BooleanField(
+		verbose_name="Czy nowy",
+		default=True,
 	)
 	accession_number = models.CharField(
 		verbose_name="Numer katalogowy",
-		max_length=50,
-		null=True,
-		blank=True,
-	)
-	product_condition = models.CharField(
-		verbose_name="Stan produktu",
 		max_length=50,
 		null=True,
 		blank=True,
