@@ -37,10 +37,26 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractUser):
-	first_name = models.CharField(max_length=255)
-	last_name = models.CharField(max_length=255)
-	email = models.CharField(max_length=255, unique=True)
-	phone = models.CharField(max_length=255, unique=True, null=True, blank=True)
+	first_name = models.CharField(
+        verbose_name="Imię",
+        max_length=255,
+    )
+	last_name = models.CharField(
+        verbose_name="Nazwisko",
+        max_length=255,
+    )
+	email = models.CharField(
+        verbose_name="Email",
+        max_length=255,
+        unique=True,
+    )
+	phone = models.CharField(
+        verbose_name="Nr Telefonu",
+        max_length=255,
+        unique=True,
+        null=True,
+        blank=True,
+    )
 	username = None
 
 	REQUIRED_FIELDS = ['first_name', 'last_name', 'phone']

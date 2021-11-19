@@ -23,8 +23,17 @@ class CartManager(models.Manager):
 
 
 class Cart(models.Model):
-	user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-	updated = models.DateTimeField(auto_now=True)
+	user = models.ForeignKey(
+		to=User,
+		verbose_name="Użytkownik",
+		on_delete=models.CASCADE,
+		null=True,
+		blank=True,
+	)
+	updated = models.DateTimeField(
+		verbose_name="Data uaktualnienia",
+		auto_now=True,
+	)
 
 	objects = CartManager()
 
@@ -47,10 +56,23 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
-	cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-	product = models.ForeignKey(Product, on_delete=models.CASCADE)
-	quantity = models.IntegerField(default=0)
-	timestamp = models.DateTimeField(auto_now_add=True)
+	cart = models.ForeignKey(
+		to=Cart,
+		verbose_name="Koszyk",
+		on_delete=models.CASCADE,
+	)
+	product = models.ForeignKey(
+		to=Product,
+		verbose_name="Produkt",
+		on_delete=models.CASCADE,
+	)
+	quantity = models.IntegerField(
+		verbose_name="Ilość w koszyku",
+		default=0,
+	)
+	timestamp = models.DateTimeField(
+		auto_now_add=True,
+	)
 
 	def __str__(self):
 		return f'{self.cart} {self.product}'

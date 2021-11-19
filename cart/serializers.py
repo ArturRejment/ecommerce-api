@@ -9,7 +9,11 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = CartItem
-		fields = ('id', 'product', 'quantity')
+		fields = (
+			'id',
+			'product',
+			'quantity',
+		)
 
 
 class CartSerializer(serializers.ModelSerializer):
@@ -17,7 +21,13 @@ class CartSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Cart
-		fields = ('id', 'user', 'get_products_quantity', 'get_cart_total', 'products')
+		fields = (
+			'id',
+			'user',
+			'get_products_quantity',
+			'get_cart_total',
+			'products'
+		)
 
 	def get_products(self, instance):
 		""" Retrieve products in the cart """
@@ -31,4 +41,9 @@ class GeneralCartSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Cart
-		fields = ('id', 'user', 'get_products_quantity', 'get_cart_total')
+		fields = (
+			'id',
+			'user',
+			'get_products_quantity',
+			'get_cart_total',
+		)
