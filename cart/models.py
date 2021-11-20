@@ -70,7 +70,7 @@ class CartItem(models.Model):
 		verbose_name="Ilość w koszyku",
 		default=0,
 	)
-	timestamp = models.DateTimeField(
+	added_at = models.DateTimeField(
 		auto_now_add=True,
 	)
 
@@ -82,4 +82,3 @@ class CartItem(models.Model):
 		""" Returns total value of this product based on quantity """
 		total = self.product.product_price * self.quantity
 		return total
-
