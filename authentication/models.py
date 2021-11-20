@@ -66,3 +66,29 @@ class User(AbstractUser):
 
 	def __str__(self):
 		return f'{self.first_name} {self.last_name}'
+
+
+class Address(models.Model):
+
+    class Meta:
+        verbose_name = "Adres"
+        verbose_name_plural = "Adresy"
+
+    post_code = models.CharField(
+        verbose_name="Kod pocztowy",
+        max_length=50,
+    )
+    country = models.CharField(
+        verbose_name="Państwo",
+        max_length=100,
+    )
+    city = models.CharField(
+        verbose_name="Miasto",
+        max_length=100,
+    )
+    street = models.CharField(
+        verbose_name="Ulica",
+        max_length=100,
+        null=True,
+        blank=True,
+    )

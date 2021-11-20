@@ -88,10 +88,13 @@ class Product(models.Model):
 class Category(models.Model):
 	category_name = models.CharField(
 		verbose_name="Nazwa kategorii",
-		max_length=50,
+		max_length=100,
 		unique=True,
-		blank=False,
-		null=False,
+	)
+	description = models.TextField(
+		verbose_name="Opis",
+		null=True,
+		blank=True,
 	)
 
 	def __str__(self):
