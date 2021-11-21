@@ -101,24 +101,33 @@ class Category(models.Model):
 		return self.category_name
 
 
-class Image(models.Model):
-	product_id = models.ForeignKey(
-		to=Product,
-		on_delete=models.CASCADE,
+class Season(models.Model):
+	name = models.CharField(
+		verbose_name="Nazwa sezonu",
+		max_length=100,
+		unique=True,
 	)
-	position = models.IntegerField()
-	created_at = models.DateTimeField(
-		auto_now_add=True,
+	description = models.TextField(
+		verbose_name="Opis",
+		null=True,
+		blank=True,
 	)
-	updated_at = models.DateTimeField(
-		auto_now=True,
+
+	def __str__(self):
+		return self.name
+
+
+class Tag(models.Model):
+	name = models.CharField(
+		verbose_name="Nazwa",
+		max_length=100,
+		unique=True,
 	)
-	src = models.ImageField(
-		upload_to='product_products',
-		default='default.jpg',
-		height_field=None,
-		width_field=None,
-		max_length=None,
+	description = models.TextField(
+		verbose_name="Opis",
+		null=True,
+		blank=True,
 	)
-	width = models.PositiveIntegerField()
-	height = models.PositiveIntegerField()
+
+	def __str__(self):
+		return self.name
