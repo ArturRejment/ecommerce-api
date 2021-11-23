@@ -57,17 +57,27 @@ class Product(models.Model):
 		blank=True,
 		null=True,
 	)
-	categories = models.ManyToManyField(
-		to='product.Category',
-		verbose_name="Kategorie",
-		related_name='product_category',
-	)
 	product_picture = models.ImageField(
 		upload_to='product_pictures',
 		default='default.jpg',
 		height_field=None,
 		width_field=None,
 		max_length=None,
+	)
+	categories = models.ManyToManyField(
+		to='product.Category',
+		verbose_name="Kategorie",
+		related_name='product_category',
+	)
+	seasons = models.ManyToManyField(
+		to='Season',
+		verbose_name="Sezony",
+		related_name='season_category',
+	)
+	tags = models.ManyToManyField(
+		to='Tag',
+		verbose_name="Tagi",
+		related_name='product_tags',
 	)
 
 	class Meta:
@@ -131,3 +141,21 @@ class Tag(models.Model):
 
 	def __str__(self):
 		return self.name
+
+
+class Discount(models.Model):
+	code = models.CharField(
+		verbose_name="Kod rabatowy",
+		max_length=100,
+		unique=True,
+	)
+	percentage_value = models.PositiveIntegerField(
+		verbose_name="Wartość procentowa",
+	)
+	is_disposable = models.BooleanField(
+		verbose_name="Czy jednorazowy",
+		default=True,
+	)
+
+	def __str__(self):
+		return self.code
