@@ -26,6 +26,7 @@ class Product(models.Model):
 		max_digits=10,
 		decimal_places=4,
 	)
+	# TODO: Change 'whole_price_whole' to 'whole_price_net'
 	whole_price_whole = models.DecimalField(
 		verbose_name="Hurtowa cena netto [zł]",
 		max_digits=10,
@@ -85,14 +86,13 @@ class Product(models.Model):
 
 	@property
 	def image_url(self):
-		try:
+		url = ''
+		if self.product_picture.url:
 			url = 'http://127.0.0.1:8000/static' + self.product_picture.url
-		except Exception:
-			url = ''
 		return url
 
 	def __str__(self):
-		return f'{self.product_name} {self.product_price}zl'
+		return f'{self.product_name}'
 
 
 class Category(models.Model):
