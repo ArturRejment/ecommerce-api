@@ -1,6 +1,8 @@
+from rest_framework.exceptions import NotFound
+
 from django.db import models
 from django.conf import settings
-from rest_framework.exceptions import NotFound
+from django.core.exceptions import ObjectDoesNotExist
 
 from product.models import Product
 
@@ -11,9 +13,9 @@ class CartManager(models.Manager):
 
 	def new_or_get(self, user):
 		try:
-			cart = self.model.objects.get(user = user.id)
-		except Exception:
-			cart = self.model.objects.new(user = user)
+			cart = self.model.objects.get(user=user.id)
+		except ObjectDoesNotExist:
+			cart = self.model.objects.new(user=user)
 		return cart
 
 	def new(self, user=None):
@@ -34,6 +36,11 @@ class Cart(models.Model):
 		verbose_name="Data uaktualnienia",
 		auto_now=True,
 	)
+	products = models.ManyToManyField(
+		to=Product,
+		verbose_name="Produkty w koszyku",
+		through='CartItem',
+	)
 
 	objects = CartManager()
 
@@ -43,15 +50,15 @@ class Cart(models.Model):
 	@property
 	def get_products_quantity(self):
 		""" Returns number of products in the cart """
-		cartitems = self.cartitem_set.all()
-		quantity = sum([item.quantity for item in cartitems])
+		cart_items = self.cartitem_set.all()
+		quantity = sum([item.quantity for item in cart_items])
 		return quantity
 
 	@property
 	def get_cart_total(self):
 		""" Returns total value of the products in the cart """
-		cartitems = self.cartitem_set.all()
-		total = sum([item.get_total_value for item in cartitems])
+		cart_items = self.cartitem_set.all()
+		total = sum([item.get_total_value for item in cart_items])
 		return total
 
 
@@ -80,5 +87,5 @@ class CartItem(models.Model):
 	@property
 	def get_total_value(self):
 		""" Returns total value of this product based on quantity """
-		total = self.product.product_price * self.quantity
+		total = self.product.retail_price_net * self.quantity
 		return total

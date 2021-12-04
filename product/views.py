@@ -6,6 +6,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
+from rest_framework import status
 
 from django.shortcuts import get_object_or_404
 
@@ -37,10 +38,10 @@ class ProductViewSet(viewsets.GenericViewSet):
 		product = get_object_or_404(self.queryset, pk=kwargs.get('pk'))
 		serializer = self.get_serializer_class()
 		serializer = serializer(product)
-		return Response(serializer.data)
+		return Response(serializer.data, status.HTTP_200_OK)
 
 	@action(methods=['GET'], url_path='get-all', detail=False)
 	def get_all_products(self, request: HttpRequest) -> Response:
 		serializer = self.get_serializer_class()
 		serializer = serializer(self.queryset, many=True)
-		return Response(serializer.data)
+		return Response(serializer.data, status.HTTP_200_OK)

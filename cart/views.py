@@ -1,29 +1,65 @@
-from django.shortcuts import render
-from rest_framework.generics import RetrieveAPIView
+from typing import TYPE_CHECKING
+
+from rest_framework import viewsets, status
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
+from rest_framework.decorators import action
 
 from .serializers import CartSerializer, GeneralCartSerializer
 from .models import Cart, CartItem
-from product.serializers import ProductDetailSerializer
 from product.models import Product
 
+if TYPE_CHECKING:
+	from django.http import HttpRequest
+	from typing import Tuple
 
-class CartDetailView(RetrieveAPIView):
-	permission_classes = (IsAuthenticated,)
+
+class CartView(viewsets.ViewSet):
 	serializer_class = CartSerializer
 
-	def retrieve(self, request):
-		""" Retrieve cart for specific user """
+	@staticmethod
+	def get_objects(request: HttpRequest, pk: int) -> Tuple[Cart, CartItem]:
+		""" Obtain necessary objects to manage the Cart """
 		user = request.user
-		if user is None or not user.is_authenticated:
+
+		if user is None:
 			raise NotFound('Unauthenticated user cannot have cart')
-		# Retrieve or create user's cart
-		cart = Cart.objects.new_or_get(user = user)
+
+		try:
+			product = Product.objects.get(pk=pk)
+		except Product.DoesNotExist:
+			raise NotFound(f"Product with id {pk} does not exist")
+
+		cart = Cart.objects.new_or_get(user=user)
+		cart_item = CartItem.objects.get_or_create(cart=cart, product=product)
+		return cart, cart_item
+
+	def get_permissions(self):
+		if self.action in ('get_cart',):
+			# TODO: Change permission to IsAuthenticated
+			self.permission_classes = AllowAny
+		return super(CartView, self).get_permissions()
+
+	@action(methods=['GET'], url_path='get', detail=True)
+	def get_cart(self, request: HttpRequest, **kwargs):
+		""" Retrieve cart for specific user. """
+		user = request.user
+		if user is None:
+			raise NotFound('Unauthenticated user cannot have cart')
+		# Retrieve cart for specific user
+		cart = Cart.objects.new_or_get(user=user)
 		serializer = self.serializer_class(cart)
-		return Response(serializer.data, status=200)
+		return Response(serializer.data, status.HTTP_200_OK)
+
+	@action(methods=['POST'], url_path='add', detail=True)
+	def add_product_to_cart(self, request: HttpRequest, pk: int = None):
+		try:
+			product = Product.objects.get(pk=pk)
+		except Product.DoesNotExist:
+			raise NotFound(f"Product with id '{pk}' does not exist.")
+		# TODO: square this action away
 
 
 class ManageCartItems(APIView):

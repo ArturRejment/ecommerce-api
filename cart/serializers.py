@@ -17,7 +17,7 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 
 class CartSerializer(serializers.ModelSerializer):
-	products = serializers.SerializerMethodField()
+	products = serializers.SerializerMethodField(method_name='get_products')
 
 	class Meta:
 		model = Cart
@@ -29,10 +29,10 @@ class CartSerializer(serializers.ModelSerializer):
 			'products'
 		)
 
-	def get_products(self, instance):
+	def get_products(self, instance: Cart):
 		""" Retrieve products in the cart """
-		cartitems =  instance.cartitem_set.all()
-		serializer = CartItemSerializer(cartitems, many=True)
+		cart_items = instance.cartitem_set.all()
+		serializer = CartItemSerializer(cart_items, many=True)
 		return serializer.data
 
 
