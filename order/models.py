@@ -48,4 +48,3 @@ class Order(models.Model):
 		blank=True,
 		on_delete=models.SET_NULL,
 	)
-

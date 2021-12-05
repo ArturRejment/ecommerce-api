@@ -26,6 +26,7 @@ class Product(models.Model):
 		max_digits=10,
 		decimal_places=4,
 	)
+	# TODO: Change 'whole_price_whole' to 'whole_price_net'
 	whole_price_whole = models.DecimalField(
 		verbose_name="Hurtowa cena netto [zł]",
 		max_digits=10,
@@ -81,18 +82,19 @@ class Product(models.Model):
 	)
 
 	class Meta:
+		verbose_name = "Produkt"
+		verbose_name_plural = "Produkty"
 		ordering = ('product_name',)
 
 	@property
 	def image_url(self):
-		try:
+		url = ''
+		if self.product_picture.url:
 			url = 'http://127.0.0.1:8000/static' + self.product_picture.url
-		except Exception:
-			url = ''
 		return url
 
 	def __str__(self):
-		return f'{self.product_name} {self.product_price}zl'
+		return f'{self.product_name}'
 
 
 class Category(models.Model):
@@ -106,6 +108,10 @@ class Category(models.Model):
 		null=True,
 		blank=True,
 	)
+
+	class Meta:
+		verbose_name = "Kategoria"
+		verbose_name_plural = "Kategorie"
 
 	def __str__(self):
 		return self.category_name
@@ -123,6 +129,10 @@ class Season(models.Model):
 		blank=True,
 	)
 
+	class Meta:
+		verbose_name = "Sezon"
+		verbose_name_plural = "Sezony"
+
 	def __str__(self):
 		return self.name
 
@@ -138,6 +148,10 @@ class Tag(models.Model):
 		null=True,
 		blank=True,
 	)
+
+	class Meta:
+		verbose_name = "Tag"
+		verbose_name_plural = "Tagi"
 
 	def __str__(self):
 		return self.name
@@ -156,6 +170,10 @@ class Discount(models.Model):
 		verbose_name="Czy jednorazowy",
 		default=True,
 	)
+
+	class Meta:
+		verbose_name = "Zniżka"
+		verbose_name_plural = "Zniżki"
 
 	def __str__(self):
 		return self.code
