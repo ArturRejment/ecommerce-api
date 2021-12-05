@@ -29,7 +29,8 @@ class CartSerializer(serializers.ModelSerializer):
 			'products'
 		)
 
-	def get_products(self, instance: Cart):
+	@staticmethod
+	def get_products(instance: Cart):
 		""" Retrieve products in the cart """
 		cart_items = instance.cartitem_set.all()
 		serializer = CartItemSerializer(cart_items, many=True)

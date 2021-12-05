@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from product.views import ProductViewSet
+from cart.views import CartView
 
 router = routers.SimpleRouter()
 router.register(
@@ -13,11 +14,15 @@ router.register(
     ProductViewSet,
     basename='product',
 )
+router.register(
+    r'cart',
+    CartView,
+    basename='cart',
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('authentication.urls')),
-    path('cart/', include('cart.urls')),
     path('billing/', include('billing.urls')),
     path('', include(router.urls)),
 ]

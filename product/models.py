@@ -82,6 +82,8 @@ class Product(models.Model):
 	)
 
 	class Meta:
+		verbose_name = "Produkt"
+		verbose_name_plural = "Produkty"
 		ordering = ('product_name',)
 
 	@property
@@ -107,6 +109,10 @@ class Category(models.Model):
 		blank=True,
 	)
 
+	class Meta:
+		verbose_name = "Kategoria"
+		verbose_name_plural = "Kategorie"
+
 	def __str__(self):
 		return self.category_name
 
@@ -123,6 +129,10 @@ class Season(models.Model):
 		blank=True,
 	)
 
+	class Meta:
+		verbose_name = "Sezon"
+		verbose_name_plural = "Sezony"
+
 	def __str__(self):
 		return self.name
 
@@ -138,6 +148,10 @@ class Tag(models.Model):
 		null=True,
 		blank=True,
 	)
+
+	class Meta:
+		verbose_name = "Tag"
+		verbose_name_plural = "Tagi"
 
 	def __str__(self):
 		return self.name
@@ -156,6 +170,10 @@ class Discount(models.Model):
 		verbose_name="Czy jednorazowy",
 		default=True,
 	)
+
+	class Meta:
+		verbose_name = "Zniżka"
+		verbose_name_plural = "Zniżki"
 
 	def __str__(self):
 		return self.code
