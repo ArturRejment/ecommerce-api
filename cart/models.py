@@ -90,7 +90,7 @@ class CartItem(models.Model):
 
 		# If quantity is greater than 9, count total value with whole price
 		if self.quantity >= 10:
-			total = self.product.whole_price_whole * self.quantity
+			total = self.product.whole_price_net * self.quantity
 		else:
 			total = self.product.retail_price_net * self.quantity
 		return total

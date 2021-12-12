@@ -27,14 +27,13 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Product
 		# TODO: Add seasons and tags to the fields
-		# TODO: Change 'whole_price_whole' to 'whole_price_net'
 		fields = (
 			'id',
 			'product_name',
 			'detail_description',
 			'stock_status',
 			'retail_price_net',
-			'whole_price_whole',
+			'whole_price_net',
 			'tax',
 			'is_visible',
 			'is_new',
