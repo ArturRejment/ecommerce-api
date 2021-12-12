@@ -5,19 +5,27 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
-from product.views import ProductViewSet
+from product.views import ProductViewSet, ProductCrudViewSet
 from cart.views import CartView
 
 router = routers.SimpleRouter()
+
 router.register(
     r'product',
     ProductViewSet,
     basename='product',
 )
+
 router.register(
     r'cart',
     CartView,
     basename='cart',
+)
+
+router.register(
+    r'product-management',
+    ProductCrudViewSet,
+    basename='product-management',
 )
 
 urlpatterns = [

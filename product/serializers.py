@@ -51,6 +51,6 @@ class ProductCartSerializer(serializers.ModelSerializer):
 		fields = (
 			'id',
 			'product_name',
-			'product_price',
+			'retail_price_net',
 			'image_url'
 		)
