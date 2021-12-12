@@ -9,11 +9,13 @@ from product.views import ProductViewSet
 from cart.views import CartView
 
 router = routers.SimpleRouter()
+
 router.register(
     r'product',
     ProductViewSet,
     basename='product',
 )
+
 router.register(
     r'cart',
     CartView,

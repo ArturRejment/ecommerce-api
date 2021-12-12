@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 from rest_framework import viewsets, status
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
 
 from .serializers import CartSerializer
@@ -32,13 +34,12 @@ class CartView(viewsets.ViewSet):
 			raise NotFound(f"Product with id {pk} does not exist")
 
 		cart = Cart.objects.new_or_get(user=user)
-		cart_item = CartItem.objects.get_or_create(cart=cart, product=product)
+		cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
 		return cart, cart_item
 
 	def get_permissions(self) -> list:
-		if self.action in ('get_cart',):
-			# TODO: Change permission to IsAuthenticated
-			self.permission_classes = AllowAny
+		if self.action in ('get_cart', 'add_product_to_cart', 'remove_product_from_cart'):
+			self.permission_classes = (IsAuthenticated,)
 		return super(CartView, self).get_permissions()
 
 	@action(methods=['GET'], url_path='get', detail=False)

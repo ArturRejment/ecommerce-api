@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 	from django.http import HttpRequest
 
 
-class ProductViewSet(viewsets.GenericViewSet):
+class ProductViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 	queryset = Product.objects.all()
 	permission_classes = (IsAuthenticated,)
 
