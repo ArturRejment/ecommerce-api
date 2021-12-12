@@ -26,8 +26,7 @@ class Product(models.Model):
 		max_digits=10,
 		decimal_places=4,
 	)
-	# TODO: Change 'whole_price_whole' to 'whole_price_net'
-	whole_price_whole = models.DecimalField(
+	whole_price_net = models.DecimalField(
 		verbose_name="Hurtowa cena netto [zł]",
 		max_digits=10,
 		decimal_places=4,
@@ -64,6 +63,8 @@ class Product(models.Model):
 		height_field=None,
 		width_field=None,
 		max_length=None,
+		null=True,
+		blank=True,
 	)
 	categories = models.ManyToManyField(
 		to='product.Category',
