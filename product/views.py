@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 from rest_framework import viewsets, mixins
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework.decorators import action
 from rest_framework import status
 
@@ -45,3 +45,9 @@ class ProductViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 		serializer = self.get_serializer_class()
 		serializer = serializer(self.queryset, many=True)
 		return Response(serializer.data, status.HTTP_200_OK)
+
+
+class ProductCrudViewSet(viewsets.ModelViewSet):
+	queryset = Product.objects.all()
+	serializer_class = ProductDetailSerializer
+	permission_classes = (AllowAny,)
