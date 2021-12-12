@@ -87,5 +87,10 @@ class CartItem(models.Model):
 	@property
 	def get_total_value(self):
 		""" Returns total value of this product based on quantity """
-		total = self.product.retail_price_net * self.quantity
+
+		# If quantity is greater than 9, count total value with whole price
+		if self.quantity >= 10:
+			total = self.product.whole_price_whole * self.quantity
+		else:
+			total = self.product.retail_price_net * self.quantity
 		return total
