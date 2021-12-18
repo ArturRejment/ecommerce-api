@@ -1,7 +1,35 @@
 from rest_framework import serializers
 
-from .models import Product
+from .models import Product, Category, Season, Tag
 from .relations import CategoryRelatedField
+
+
+class CategorySerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = Category
+		fields = (
+			'category_name',
+			'description',
+		)
+
+
+class SeasonSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Season
+		fields = (
+			'name',
+			'description',
+		)
+
+
+class TagSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Tag
+		fields = (
+			'name',
+			'description',
+		)
 
 
 class ProductListSerializer(serializers.ModelSerializer):
