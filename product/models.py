@@ -1,4 +1,11 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from django.db import models
+
+if TYPE_CHECKING:
+	from decimal import Decimal
 
 
 class Product(models.Model):
@@ -20,6 +27,10 @@ class Product(models.Model):
 	stock_status = models.PositiveIntegerField(
 		verbose_name="Dostępność",
 		choices=STOCK_STATUS_CHOICE,
+	)
+	stock_availability = models.PositiveIntegerField(
+		verbose_name="Stan magazynowy",
+		default=0,
 	)
 	retail_price_net = models.DecimalField(
 		verbose_name="Detaliczna cena netto [zł]",
@@ -93,6 +104,14 @@ class Product(models.Model):
 		if self.product_picture.url:
 			url = 'http://127.0.0.1:8000/static' + self.product_picture.url
 		return url
+
+	@property
+	def whole_price_brutt(self) -> Decimal:
+		return self.whole_price_net * (1+self.tax/100)
+
+	@property
+	def retail_price_brutt(self) -> Decimal:
+		return self.retail_price_net * (1+self.tax/100)
 
 	def __str__(self):
 		return f'{self.product_name}'

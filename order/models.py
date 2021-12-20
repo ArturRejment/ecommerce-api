@@ -1,6 +1,7 @@
 from django.db import models
 
 from cart.models import Cart
+from product.models import Discount
 from authentication.models import User
 
 
@@ -23,9 +24,10 @@ class Order(models.Model):
 		max_digits=10,
 		decimal_places=4,
 	)
-	discount_code = models.CharField(
+	discount_code = models.ForeignKey(
+		to=Discount,
+		on_delete=models.SET_NULL,
 		verbose_name="Kod rabatowy",
-		max_length=50,
 		null=True,
 		blank=True,
 	)

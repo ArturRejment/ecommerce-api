@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import Product, Category, Season, Tag
-from .relations import CategoryRelatedField
+from .relations import CategoryRelatedField, TagRelatedField, SeasonRelatedField
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -40,7 +40,7 @@ class ProductListSerializer(serializers.ModelSerializer):
 		fields = (
 			'id',
 			'product_name',
-			'retail_price_net',
+			'retail_price_brutt',
 			'categories',
 			'image_url',
 		)
@@ -51,23 +51,32 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 		many=True,
 		required=False,
 	)
+	tags = TagRelatedField(
+		many=True,
+		required=False,
+	)
+	seasons = SeasonRelatedField(
+		many=True,
+		required=False,
+	)
 
 	class Meta:
 		model = Product
-		# TODO: Add seasons and tags to the fields
 		fields = (
 			'id',
 			'product_name',
 			'detail_description',
 			'stock_status',
-			'retail_price_net',
-			'whole_price_net',
+			'retail_price_brutt',
+			'whole_price_brutt',
 			'tax',
 			'is_visible',
 			'is_new',
 			'accession_number',
 			'shipping_cost',
 			'categories',
+			'tags',
+			'seasons',
 		)
 
 
@@ -78,6 +87,6 @@ class ProductCartSerializer(serializers.ModelSerializer):
 		fields = (
 			'id',
 			'product_name',
-			'retail_price_net',
+			'retail_price_brutt',
 			'image_url'
 		)
