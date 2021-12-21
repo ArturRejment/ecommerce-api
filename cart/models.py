@@ -61,6 +61,13 @@ class Cart(models.Model):
 		total = sum([item.get_total_value for item in cart_items])
 		return total
 
+	def is_valid_cart(self) -> bool:
+		cart_items = self.cartitem_set.all()
+		for item in cart_items:
+			if item.quantity > item.product.stock_availability:
+				return False
+		return True
+
 
 class CartItem(models.Model):
 	cart = models.ForeignKey(
@@ -90,7 +97,7 @@ class CartItem(models.Model):
 
 		# If quantity is greater than 9, count total value with whole price
 		if self.quantity >= 10:
-			total = self.product.whole_price_net * self.quantity
+			total = self.product.whole_price_brutt * self.quantity
 		else:
-			total = self.product.retail_price_net * self.quantity
+			total = self.product.retail_price_brutt * self.quantity
 		return total

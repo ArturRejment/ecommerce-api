@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Product, Category, Season, Tag
+from .models import Product, Category, Season, Tag, Discount
 from .relations import CategoryRelatedField, TagRelatedField, SeasonRelatedField
 
 
@@ -89,4 +89,13 @@ class ProductCartSerializer(serializers.ModelSerializer):
 			'product_name',
 			'retail_price_brutt',
 			'image_url'
+		)
+
+
+class DiscountSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = Discount
+		fields = (
+			'code',
 		)

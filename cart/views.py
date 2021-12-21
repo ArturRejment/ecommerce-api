@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from rest_framework import viewsets, status
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import action
@@ -57,6 +57,8 @@ class CartView(viewsets.ViewSet):
 	def add_product_to_cart(self, request: HttpRequest, pk: int = None) -> Response:
 		cart, cart_item = self.get_objects(request, pk)
 		cart_item.quantity = (cart_item.quantity + 1)
+		if cart_item.quantity > cart_item.product.stock_availability:
+			raise ValidationError("No more products are available is stock")
 		cart_item.save()
 		serializer = self.serializer_class(cart)
 		return Response(serializer.data, status.HTTP_200_OK)

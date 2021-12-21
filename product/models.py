@@ -116,6 +116,15 @@ class Product(models.Model):
 	def __str__(self):
 		return f'{self.product_name}'
 
+	def save(self, *args, **kwargs):
+		if self.stock_availability == 0:
+			self.stock_status = 0
+		elif self.stock_availability < 10:
+			self.stock_status = 10
+		else:
+			self.stock_status = 20
+		super(Product, self).save(*args, **kwargs)
+
 
 class Category(models.Model):
 	category_name = models.CharField(
@@ -189,6 +198,10 @@ class Discount(models.Model):
 	is_disposable = models.BooleanField(
 		verbose_name="Czy jednorazowy",
 		default=True,
+	)
+	is_used = models.BooleanField(
+		verbose_name="Czy został użyty",
+		default=False,
 	)
 
 	class Meta:
