@@ -11,8 +11,10 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 from rest_framework import status
 
-from .serializers import ProductDetailSerializer, ProductListSerializer
-from .models import Product
+from .serializers import (
+	ProductDetailSerializer, ProductListSerializer, CategorySerializer, SeasonSerializer, TagSerializer
+)
+from .models import Product, Category, Tag, Season
 
 if TYPE_CHECKING:
 	from django.http import HttpRequest
@@ -66,4 +68,22 @@ class ProductViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 class ProductCrudViewSet(viewsets.ModelViewSet):
 	queryset = Product.objects.all()
 	serializer_class = ProductDetailSerializer
+	permission_classes = (AllowAny,)
+
+
+class CategoryCrudViewSet(viewsets.ModelViewSet):
+	queryset = Category.objects.all()
+	serializer_class = CategorySerializer
+	permission_classes = (AllowAny,)
+
+
+class SeasonCrudViewSet(viewsets.ModelViewSet):
+	queryset = Season.objects.all()
+	serializer_class = SeasonSerializer
+	permission_classes = (AllowAny,)
+
+
+class TagCrudViewSerializer(viewsets.ModelViewSet):
+	queryset = Tag.objects.all()
+	serializer_class = TagSerializer
 	permission_classes = (AllowAny,)
