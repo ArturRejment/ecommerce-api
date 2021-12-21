@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from decimal import Decimal
 
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
@@ -31,14 +32,19 @@ class OrderViewSet(viewsets.GenericViewSet):
             raise ValidationError("There is an issue with your cart. Please, contact us for help.")
         discount = None
         total_cart_value = cart.get_cart_total
-        try:
-            code = request.data.get('discount_code', None)
-            discount = Discount.objects.get(code=code)
-        except Discount.DoesNotExist:
-            raise NotFound("Please, enter valid discount code.")
 
-        if discount.is_disposable and discount.is_used:
-            raise ValidationError("This code is already used.")
+        code = request.data.get('discount_code', None)
+        if code is not None:
+            try:
+                discount = Discount.objects.get(code=code)
+            except Discount.DoesNotExist:
+                raise NotFound("Please, enter valid discount code.")
+            else:
+                if discount.is_disposable and discount.is_used:
+                    raise ValidationError("This code is already used.")
+                total_cart_value = total_cart_value - (total_cart_value*Decimal(discount.percentage_value/100))
+                discount.is_used = True
+                discount.save()
 
         order = Order.objects.create(
             cart=cart,
@@ -48,7 +54,12 @@ class OrderViewSet(viewsets.GenericViewSet):
             discount_code=discount,
         )
         order.save()
+
+        for item in cart.cartitem_set.all():
+            item.product.stock_availability -= item.quantity
+            item.product.save()
+
         new_discount = generate_discount_code()
-        serializer = DiscountSerializer(new_discount)
+        serializer = OrderSerializer(order)
         return Response(serializer.data)
 

@@ -36,7 +36,7 @@ class Order(models.Model):
 		choices=STATUS_CHOICE,
 		default=0,
 	)
-	cart = models.OneToOneField(
+	cart = models.ForeignKey(
 		to=Cart,
 		verbose_name="Koszyk",
 		null=True,

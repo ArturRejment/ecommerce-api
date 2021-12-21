@@ -34,6 +34,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 class ProductListSerializer(serializers.ModelSerializer):
 	categories = CategoryRelatedField(many=True, required=False)
+	stock_status = serializers.ChoiceField(choices=Product.STOCK_STATUS_CHOICE)
 
 	class Meta:
 		model = Product
@@ -41,6 +42,8 @@ class ProductListSerializer(serializers.ModelSerializer):
 			'id',
 			'product_name',
 			'retail_price_brutt',
+			'stock_status',
+			'stock_availability',
 			'categories',
 			'image_url',
 		)
