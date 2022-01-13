@@ -80,6 +80,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 			'categories',
 			'tags',
 			'seasons',
+			'image_url',
 		)
 
 
