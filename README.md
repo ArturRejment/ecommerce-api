@@ -166,3 +166,30 @@ API for ecommerce
 
 ### 2.4.3 /auth/token/logout/
 - `POST` Allows to logout user
+
+### 2.4.4. /auth/change-password/
+- `PATCH` Allows to change password requires old_password and new_password values
+SUCCESS:
+```json
+{
+    "new_password": [
+        "New password created successfully."
+    ]
+}
+```
+Wrong old password:
+```json
+{
+    "old_password": [
+        "Wrong password."
+    ]
+}
+```
+NOT PROVIDED:
+```json
+{
+    "password": [
+        "Missing value for new_password or old_password"
+    ]
+}
+```
