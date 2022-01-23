@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 
 class OrderViewSet(viewsets.GenericViewSet):
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().select_related('cart')
     serializer_class = OrderSerializer
     permission_classes = (IsAuthenticated,)
 
@@ -69,4 +69,10 @@ class OrderViewSet(viewsets.GenericViewSet):
         new_response = {'new_discount': new_discount.code}
         new_response.update(serializer.data)
         return Response(new_response)
+
+    @action(methods=['GET'], url_path='get-all', detail=False)
+    def get_user_orders(self, request: HttpRequest, *args, **kwargs):
+        orders = self.queryset.filter(user=request.user)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)
 
