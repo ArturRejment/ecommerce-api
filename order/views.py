@@ -75,4 +75,3 @@ class OrderViewSet(viewsets.GenericViewSet):
         orders = self.queryset.filter(user=request.user)
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
-
