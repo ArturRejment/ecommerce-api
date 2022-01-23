@@ -15,7 +15,7 @@ def generate_discount_code() -> Discount:
             percentage_value=5,
             is_disposable=True,
             is_used=False,
-        ).save()
+        )
         return discount
     else:
         return generate_discount_code()
