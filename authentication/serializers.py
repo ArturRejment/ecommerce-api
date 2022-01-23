@@ -1,3 +1,5 @@
+from abc import ABC
+
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 
@@ -29,4 +31,11 @@ class UserSerializer(serializers.ModelSerializer):
 			'last_name',
 			'phone'
 		)
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+	model = User
+
+	old_password = serializers.CharField(required=True)
+	new_password = serializers.CharField(required=True)
 
