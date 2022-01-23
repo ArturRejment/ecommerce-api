@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 
 class OrderViewSet(viewsets.GenericViewSet):
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().select_related('cart')
     serializer_class = OrderSerializer
     permission_classes = (IsAuthenticated,)
 
@@ -32,8 +32,10 @@ class OrderViewSet(viewsets.GenericViewSet):
             raise ValidationError("There is an issue with your cart. Please, contact us for help.")
         discount = None
         total_cart_value = cart.get_cart_total
+        if total_cart_value <= 0:
+            raise ValidationError("Cannot create order from empty cart.")
 
-        code = request.data.get('discount_code', None)
+        code = request.POST.get('discount_code', None)
         if code is not None:
             try:
                 discount = Discount.objects.get(code=code)
@@ -59,7 +61,17 @@ class OrderViewSet(viewsets.GenericViewSet):
             item.product.stock_availability -= item.quantity
             item.product.save()
 
+        cart.user = None
+        cart.save()
+
         new_discount = generate_discount_code()
         serializer = OrderSerializer(order)
-        return Response(serializer.data)
+        new_response = {'new_discount': new_discount.code}
+        new_response.update(serializer.data)
+        return Response(new_response)
 
+    @action(methods=['GET'], url_path='get-all', detail=False)
+    def get_user_orders(self, request: HttpRequest, *args, **kwargs):
+        orders = self.queryset.filter(user=request.user)
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data)

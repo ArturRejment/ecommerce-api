@@ -145,6 +145,9 @@ API for ecommerce
 }
 ```
 
+### 2.3.2 /order/get-all/
+- `GET` get all orders for logged user
+
 ## 2.4 Authentication
 
 ### 2.4.1 /auth/users/
