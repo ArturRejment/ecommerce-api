@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 from cart.models import Cart
@@ -19,6 +21,10 @@ class Order(models.Model):
 		verbose_name = "Zamówienie"
 		verbose_name_plural = "Zamówienia"
 
+	order_number = models.UUIDField(
+		default=uuid.uuid4,
+		editable=False,
+	)
 	total_cost_net = models.DecimalField(
 		verbose_name="Całkowity koszt zamówienia",
 		max_digits=10,
