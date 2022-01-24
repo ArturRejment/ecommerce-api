@@ -61,7 +61,8 @@ class ProductViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 	@action(methods=['GET'], url_path='get-all', detail=False)
 	def get_all_products(self, request: HttpRequest) -> Response:
 		serializer = self.get_serializer_class()
-		serializer = serializer(self.get_queryset(), many=True)
+		products = Product.objects.all()
+		serializer = serializer(products, many=True)
 		return Response(serializer.data, status.HTTP_200_OK)
 
 
